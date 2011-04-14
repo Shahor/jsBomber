@@ -1,3 +1,6 @@
-* HOW TO INSTALL *
+jsBomber
+========
 
-You need socket.io installed on your server : npm install socket.io
+## Requirements
+
+- The [Socket.IO client](http://github.com/LearnBoost/Socket.IO), to connect from the browser
