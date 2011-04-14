@@ -1,22 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>jsBomber ftw \o/</title>
 
-	<script defer type="text/javascript" src='js/jquery-1.5.2.min.js'></script>
-	<script defer type="text/javascript" src="js/socket.io.js"></script>
-	
-	<script defer type="text/javascript" src='js/jquery.hotkeys.js'></script>
+	<script type="text/javascript" src='js/jquery-1.5.2.min.js'></script>
+	<script type="text/javascript" src="js/socket.io.js"></script>
+	<script type="text/javascript" src='js/jquery.hotkeys.js'></script>
+	<script type="text/javascript" src='js/key_status.js'></script>
+	<script type="text/javascript" src='js/debug.js'></script>
+	<script type="text/javascript" src='js/gameloop.js'></script>
+	<script type="text/javascript" src='js/gameboard.js'></script>
+	<script type="text/javascript" src='js/player.js'></script>
+	<style>
+		canvas {
+			border: black solid 1px;
+		}
+		#container {
+			width: 600px;
+			margin: auto;
+		}
+	</style>
 </head>
-
-
-
-<script type='text/javascript'>
-window.onload = function () {
-	var socket = new io.Socket('localhost', {port: 8080, rememberTransport: false});
-	socket.connect();
-	socket.on('connect', function(){ console.log('connected'); }) 
-	socket.on('message', function(mess){ console.log(mess); }) 
-	socket.on('disconnect', function(){console.log('disconnected'); }) 	
-};
-</script>
+<body>
+	<div id="container">
+		<canvas id="gameBoard" width="600" height="600">
+			<p>
+				Your browser is not capable of displaying canvas elements.
+			</p>
+		</canvas>
+	</div>
+</body>
+</html>
