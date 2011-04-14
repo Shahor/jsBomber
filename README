@@ -1,0 +1,3 @@
+* HOW TO INSTALL *
+
+You need socket.io installed on your server : npm install socket.io
