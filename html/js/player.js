@@ -24,7 +24,7 @@ Player.prototype.move = function(direction) {
 
 			break;
 		case 'left':
-			if (this.x <= 0) {
+			if (this.x <= 0 || this.wouldCollideWithIndestructibleWall()) {
 				Debug.warn("Can't move left anymore");
 				break;
 			}
@@ -55,10 +55,17 @@ Player.prototype.move = function(direction) {
 Player.prototype.wouldCollideWithIndestructibleWall = function () {
 	var rightBorder = this.x + this.img.width;
 	var bottomBorder = this.y + this.img.height;
-	Debug.log(parseInt(Game.board.canvas.height / this.y));
-	Debug.log(parseInt(Game.board.canvas.height / this.y) % 2);
-	var collisionRight = (check.isInt(rightBorder / 40) && parseInt(Game.board.canvas.height / this.y) % 2 === 1);
-	var collisionLeft;
+	
+	var imageTopIsInLineNumber = this.y / this.img.height;
+	var imageBottomIsInLineNumber = bottomBorder / this.img.height;
+	
+	var collisionRight = (!check.isInt(imageBottomIsInLineNumber) && !check.isInt(imageTopIsInLineNumber) && check.isInt(rightBorder / 40) 
+	&& (parseInt(imageTopIsInLineNumber) % 2 === 0) || (parseInt(imageBottomIsInLineNumber) % 2 === 0));
+	
+	var collisionLeft = (!check.isInt(imageBottomIsInLineNumber) && !check.isInt(imageTopIsInLineNumber) && check.isInt(this.x / 40) 
+	&& (parseInt(imageTopIsInLineNumber) % 2 === 0) || (parseInt(imageBottomIsInLineNumber) % 2 === 0));
+	
 	if (collisionRight) return true;
+	if (collisionLeft) return true;
 		
 }
