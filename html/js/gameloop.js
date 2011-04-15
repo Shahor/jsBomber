@@ -31,6 +31,7 @@ $(function() {
 		if (keydown.down) Game.players.p1.move('down');
 		if (keydown.space) /* TODO Place bombs */ Debug.log('BOMB');
 		
+		Game.board.drawBoard();
 		Game.players.p1.draw(Game.ctx);
 	}, 1000 / Game.FPS);
 })

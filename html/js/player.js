@@ -1,6 +1,6 @@
-function Player(img) {
-	this.x = 200;
-	this.y = 200;
+function Player(img, x, y) {
+	this.x = x || 0;
+	this.y = y || 0;
 	this.speed = 5;
 	this.img = img;	
 }
@@ -47,4 +47,8 @@ Player.prototype.move = function(direction) {
 		default:
 			throw 'MovementDirectionException';
 	}
+}
+
+Player.prototype.wouldCollideWithIndestructibleWall = function () {
+
 }
