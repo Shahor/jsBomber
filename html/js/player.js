@@ -85,12 +85,12 @@ Player.prototype.wouldCollideWithIndestructibleWall = function (direction) {
 			}
 			break;
 		case 'down':
-				if ((!check.isInt(imageLeftIsInColumnNumber) && !check.isInt(imageRightIsInColumnNumber) && check.isInt(bottomBorder / 40) 
-					&& (parseInt(imageRightIsInColumnNumber) % 2 === 1) || (parseInt(imageLeftIsInColumnNumber) % 2 === 1)))
-				{
-					return true;
-				}
-				break;
+			if ((!check.isInt(imageLeftIsInColumnNumber) && !check.isInt(imageRightIsInColumnNumber) && check.isInt(bottomBorder / 40) 
+				&& (parseInt(imageRightIsInColumnNumber) % 2 === 1) || (parseInt(imageLeftIsInColumnNumber) % 2 === 1)))
+			{
+				return true;
+			}
+			break;
 		
 		default: 
 			Debug.error('Not implemented yet');
