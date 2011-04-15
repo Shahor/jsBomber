@@ -15,7 +15,7 @@ $(function() {
 	player.onload = function () {
 		Debug.log('First bomber loaded');
 		
-		Game.players.p1 = new Player(player);
+		Game.players.p1 = new Player(player, 25);
 		
 		Game.started = true; /* TODO : put it where it belogns :p */
 	};

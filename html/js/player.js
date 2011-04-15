@@ -1,8 +1,9 @@
 function Player(img, x, y) {
 	this.x = x || 0;
 	this.y = y || 0;
+	this.img = img;
 	this.speed = 5;
-	this.img = img;	
+
 }
 
 Player.prototype.draw = function (ctx) {
@@ -14,12 +15,13 @@ Player.prototype.draw = function (ctx) {
 Player.prototype.move = function(direction) {
 	switch (direction) {
 		case 'right': 
-			if (this.x + this.img.width >= Game.board.canvas.width) {
+			if (this.x + this.img.width >= Game.board.canvas.width || this.wouldCollideWithIndestructibleWall()) {
 				Debug.warn("Can't move right anymore");
 				break;
 			}
 
 			this.x += this.speed; 
+
 			break;
 		case 'left':
 			if (this.x <= 0) {
@@ -43,6 +45,7 @@ Player.prototype.move = function(direction) {
 				break;
 			}
 			this.y += this.speed;
+
 			break;
 		default:
 			throw 'MovementDirectionException';
@@ -50,5 +53,12 @@ Player.prototype.move = function(direction) {
 }
 
 Player.prototype.wouldCollideWithIndestructibleWall = function () {
-
+	var rightBorder = this.x + this.img.width;
+	var bottomBorder = this.y + this.img.height;
+	Debug.log(parseInt(Game.board.canvas.height / this.y));
+	Debug.log(parseInt(Game.board.canvas.height / this.y) % 2);
+	var collisionRight = (check.isInt(rightBorder / 40) && parseInt(Game.board.canvas.height / this.y) % 2 === 1);
+	var collisionLeft;
+	if (collisionRight) return true;
+		
 }
