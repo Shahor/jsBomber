@@ -9,15 +9,14 @@ var Game = {
 }
 
 $(function() {
-	Game.board = new Gameboard();
  	var player = new Image();
-
+	Game.board = new Gameboard();
+	
+	Game.board.build();
+	
 	player.onload = function () {
-		Debug.log('First bomber loaded');
-		
-		Game.players.p1 = new Player(player, 25);
-		
-		Game.started = true; /* TODO : put it where it belogns :p */
+		Game.players.p1 = new Player(player);
+		Game.started = true; /* TODO : put it where it belongs to :p */
 	};
 	player.src = 'images/bomberman_40x40.png';
 
