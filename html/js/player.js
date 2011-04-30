@@ -73,6 +73,15 @@ Player.prototype.canWalkThroughBlock = function (blockType) {
 	}
 }
 
+Player.prototype.placeBomb = function () {
+	var actualBlock = this.isInBlock();
+	var actualBlockType = Game.board.getBlockType(actualBlock);
+	if (actualBlockType !== 4) /* Has no bomb yet */
+	{
+		new Bomb(actualBlock);
+	}
+}
+
 Player.prototype.wouldCollide = function (direction) {
 	var nextBlockType;
 	var nextBlockPositionToBe;

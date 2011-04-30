@@ -7,6 +7,8 @@ function Gameboard() {
 	this.floor.src = 'images/sand.png';
 	this.destructible = new Image()
 	this.destructible.src = 'images/brick.png';
+	this.bomb = new Image();
+	this.bomb.src = 'images/bomb.png';
 	
 	this.canvas = document.getElementById('gameBoard');
 	this.ctx = this.canvas.getContext('2d');
@@ -69,6 +71,9 @@ function Gameboard() {
 					case 2:
 						this.ctx.drawImage(this.indestructible, j * 40, i * 40, this.indestructible.width, this.indestructible.height);
 						break;
+					case 4:
+						this.ctx.drawImage(this.bomb, j * 40, i * 40, this.indestructible.width, this.indestructible.height);
+						break;	
 					case 0:
 						this.ctx.drawImage(this.floor, j * 40, i * 40, this.indestructible.width, this.indestructible.height);
 						break;
@@ -83,5 +88,13 @@ function Gameboard() {
 		if (!(blockCoordinates instanceof Array)) throw 'WrongTypeArgument';
 
 		return this.cells[blockCoordinates[1]][blockCoordinates[0]];
+	}
+	
+	this.changeBlockType = function (blockCoordinates, newType)
+	{
+		console.log("ENTERING CHANGE TYPE");
+		if (!(blockCoordinates instanceof Array)) throw 'WrongTypeArgument';
+		
+		this.cells[blockCoordinates[1]][blockCoordinates[0]] = newType;
 	}
 }
