@@ -1,10 +1,11 @@
 function Gameboard() {
+	this.cellSize = 40;
 	this.cells = [];
 	this.indestructible = new Image();
 	this.indestructible.src = 'images/wall.png';
 	this.floor = new Image();
 	this.floor.src = 'images/sand.png';
-	this.destructible = new Image();
+	this.destructible = new Image()
 	this.destructible.src = 'images/brick.png';
 	
 	this.canvas = document.getElementById('gameBoard');
@@ -15,19 +16,17 @@ function Gameboard() {
 	};
 	
 	this.build = function () {
-		with (this)
-		{
 			/* Empty lines */
 			for (var i = 0; i < 15; i++)
 			{
-				cells[i] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1];
+				this.cells[i] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1];
 			}
 			
 			/* Spawn points */
-			cells[0 ][0 ] = cells[0 ][ 1] = cells[1][ 0] = 0;
-			cells[0][14] = cells[0][13] = cells[1][14] = 0;
-			cells[13][0] = cells[14][0] = cells[14][1] = 0;
-			cells[14][13] = cells[13][14] = cells[14][14] = 0;
+			this.cells[0][0] = this.cells[0][1] = this.cells[1][0] = 0;
+			this.cells[0][14] = this.cells[0][13] = this.cells[1][14] = 0;
+			this.cells[13][0] = this.cells[14][0] = this.cells[14][1] = 0;
+			this.cells[14][13] = this.cells[13][14] = this.cells[14][14] = 0;
 			
 			/* Indestructible walls */
 			for (var i = 0; i < 15; i++)
@@ -38,18 +37,20 @@ function Gameboard() {
 					{
 						if (j % 2 == 1) /* Odd */
 						{
-							cells[i][j] = 2;
+							this.cells[i][j] = 2;
 						}
 					}
 				}
 			}
-		}
 	}
 	
 	this.drawBoard = function () {
-		for (var i = 0; i < 15; i++)
+		var yCellsNumber = (this.canvas.height / this.cellSize);
+		var xCellsNumber = (this.canvas.width / this.cellSize);
+		
+		for (var i = 0; i < yCellsNumber; i++)
 		{
-			for (var j = 0; j < 15; j++)
+			for (var j = 0; j < xCellsNumber; j++)
 			{
 				switch (this.cells[i][j])
 				{
@@ -76,5 +77,11 @@ function Gameboard() {
 				}
 			}
 		}
+	}
+
+	this.getBlockType = function (blockCoordinates) {
+		if (!(blockCoordinates instanceof Array)) throw 'WrongTypeArgument';
+
+		return this.cells[blockCoordinates[1]][blockCoordinates[0]];
 	}
 }

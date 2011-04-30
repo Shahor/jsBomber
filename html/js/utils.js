@@ -1,10 +1,13 @@
 var check =  {
-	'isInt' : function (i){
+	'isInt' : function (i) {
 		var intRegex = /^\d+$/;
-		if(intRegex.test(i)) {
+		
+		if(intRegex.test(i)) 
+		{
 			return true;
 		}
-		else {
+		else 
+		{
 			return false;
 		}
 		
