@@ -1,16 +1,30 @@
-function Bomb (coordinates)
+function Bomb (coordinates, player)
 {
+	this.player = player;
 	this.power = 1;
 	this.x = coordinates[0];
 	this.y = coordinates[1];
 	this.timeBeforeExplosion = Game.FPS * 2;
 
-	Game.board.changeBlockType(coordinates, 4);
-	Game.bombs.push(this);
+	if (this.player.hasAvailableBombs())
+	{
+		this.player.bombsAvailable -= 1;
+		Game.board.changeBlockType(coordinates, 4);
+		Game.bombs.push(this);
+	}
 }
 
 Bomb.prototype.explode = function () {
 	var blocksToUpdate = [];
+	var players = [];
+	
+	for (var i in Game.players)
+	{
+		if (Game.players[i] instanceof Player)
+		{
+			players.push(Game.players[i].isInBlock());
+		}
+	}
 	
 	
 	blocksToUpdate.push({
@@ -22,32 +36,35 @@ Bomb.prototype.explode = function () {
 	{
 		blocksToUpdate.push({
 			'type' : Game.board.getBlockType([this.x, this.y - 1]),
-			'coordinates' : [this.x, this.y - 1]
+			'coordinates' : [this.x, this.y - 1],
+			'direction' : 'left'
 		});
 	}
 	if (this.y < 14)
 	{
 		blocksToUpdate.push({
 			'type' : Game.board.getBlockType([this.x, this.y + 1]),
-			'coordinates' : [this.x, this.y + 1]
+			'coordinates' : [this.x, this.y + 1],
+			'direction' : 'down'
 		});
 	}
 	if (this.x > 0)
 	{
 		blocksToUpdate.push({
 			'type' : Game.board.getBlockType([this.x - 1, this.y]),
-			'coordinates' : [this.x - 1, this.y]
+			'coordinates' : [this.x - 1, this.y],
+			'direction' : 'left'
 		});
 	}
 	if (this.x < 14)
 	{
 		blocksToUpdate.push({
 			'type' : Game.board.getBlockType([this.x + 1, this.y]),
-			'coordinates' : [this.x + 1, this.y]
+			'coordinates' : [this.x + 1, this.y],
+			'direction' : 'right'
 		});
 	}
 	
-	console.log("blocksToUpdate lenght " + blocksToUpdate.length);
 	for (var i = 0; i < blocksToUpdate.length; i++)
 	{
 		switch (blocksToUpdate[i].type)
@@ -61,11 +78,14 @@ Bomb.prototype.explode = function () {
 			case 4:
 				Game.board.changeBlockType(blocksToUpdate[i].coordinates, 0);
 				break;
-			case 0: /* empty */			
+			case 0: /* empty */	
+				/* TODO : Check for players over there ! */
+				break;		
 			case 2: /* indestructible */
 			default:
 				Debug.log("block type  " + blocksToUpdate[i].type);
 				break;
 		}
 	}
+	this.player.bombsAvailable += 1;
 }

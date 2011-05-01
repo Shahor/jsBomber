@@ -3,12 +3,17 @@ function Player(img, x, y) {
 	this.y = y || 0;
 	this.img = img;
 	this.speed = 5;
+	this.bombsAvailable = 1;
 
 }
 
 Player.prototype.draw = function (ctx) {
 	Game.board.ctx.drawImage(this.img, this.x, this.y, this.img.width, this.img.height);
 };
+
+Player.prototype.hasAvailableBombs = function () {
+	return this.bombsAvailable > 0 ? true : false;
+}
 
 /**
 	@brief	Moves player in given direction
@@ -78,7 +83,7 @@ Player.prototype.placeBomb = function () {
 	var actualBlockType = Game.board.getBlockType(actualBlock);
 	if (actualBlockType !== 4) /* Has no bomb yet */
 	{
-		new Bomb(actualBlock);
+		new Bomb(actualBlock, this);
 	}
 }
 

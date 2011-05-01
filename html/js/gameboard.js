@@ -90,9 +90,7 @@ function Gameboard() {
 		return this.cells[blockCoordinates[1]][blockCoordinates[0]];
 	}
 	
-	this.changeBlockType = function (blockCoordinates, newType)
-	{
-		console.log("ENTERING CHANGE TYPE");
+	this.changeBlockType = function (blockCoordinates, newType)	{
 		if (!(blockCoordinates instanceof Array)) throw 'WrongTypeArgument';
 		
 		this.cells[blockCoordinates[1]][blockCoordinates[0]] = newType;
