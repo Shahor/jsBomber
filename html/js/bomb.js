@@ -16,16 +16,6 @@ function Bomb (coordinates, player)
 
 Bomb.prototype.explode = function () {
 	var blocksToUpdate = [];
-	var players = [];
-	
-	for (var i in Game.players)
-	{
-		if (Game.players[i] instanceof Player)
-		{
-			players.push(Game.players[i].isInBlock());
-		}
-	}
-	
 	
 	blocksToUpdate.push({
 		'type' : 4,
@@ -77,9 +67,10 @@ Bomb.prototype.explode = function () {
 				break;
 			case 4:
 				Game.board.changeBlockType(blocksToUpdate[i].coordinates, 0);
+				this.checkForPlayersToKill(blocksToUpdate[i].coordinates);
 				break;
 			case 0: /* empty */	
-				/* TODO : Check for players over there ! */
+				this.checkForPlayersToKill(blocksToUpdate[i].coordinates);
 				break;		
 			case 2: /* indestructible */
 			default:
@@ -88,4 +79,18 @@ Bomb.prototype.explode = function () {
 		}
 	}
 	this.player.bombsAvailable += 1;
+}
+
+Bomb.prototype.checkForPlayersToKill = function (blockToLook) {
+        for (var j in Game.players)
+        {
+                if (Game.players[j] instanceof Player)
+                {
+                        var coords = Game.players[j].isInBlock();
+                        if (coords[0] === blockToLook[0] && coords[1] === blockToLook[1])
+                        {
+                                Game.players[j].dead = true;
+                        }
+                }
+        }
 }

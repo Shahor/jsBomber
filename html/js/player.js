@@ -4,7 +4,7 @@ function Player(img, x, y) {
 	this.img = img;
 	this.speed = 5;
 	this.bombsAvailable = 1;
-
+        this.dead = false;
 }
 
 Player.prototype.draw = function (ctx) {
@@ -20,6 +20,8 @@ Player.prototype.hasAvailableBombs = function () {
 	@direction	string could be left, right, up, down
 */
 Player.prototype.move = function(direction) {
+        if (this.dead) throw 'DeadException';
+
 	switch (direction) {
 		case 'right': 
 			if (this.wouldCollide(direction)) {
