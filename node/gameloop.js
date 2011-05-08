@@ -54,4 +54,14 @@ $(function() {
 		Game.board.drawBoard();
 		Game.players.p1.draw(Game.ctx);
 	}, 1000 / Game.FPS);
-});
+})
+
+/*
+window.onload = function () {
+	var socket = new io.Socket('localhost', {port: 8080, rememberTransport: false});
+	socket.connect();
+	socket.on('connect', function(){ console.log('connected'); }) 
+	socket.on('message', function(mess){ console.log(mess); }) 
+	socket.on('disconnect', function(){console.log('disconnected'); }) 	
+};
+*/
