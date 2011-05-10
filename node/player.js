@@ -1,15 +1,10 @@
 function Player(img, x, y) {
 	this.x = x || 0;
 	this.y = y || 0;
-	this.img = img;
 	this.speed = 5;
 	this.bombsAvailable = 1;
 	this.dead = false;
 }
-
-Player.prototype.draw = function (ctx) {
-	Game.board.ctx.drawImage(this.img, this.x, this.y, this.img.width, this.img.height);
-};
 
 Player.prototype.hasAvailableBombs = function () {
 	return this.bombsAvailable > 0 ? true : false;

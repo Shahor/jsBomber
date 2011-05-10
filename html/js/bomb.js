@@ -1,5 +1,14 @@
 function Bomb (coordinates, player)
 {
+	// Server side
+	Game.socket.send({
+		'msg' : 'placeBomb', 
+		'parameters' : { 
+			'coordinates' : coordinates 
+		}
+	});
+	
+	// Below : previous client side
 	this.player = player;
 	this.power = 1;
 	this.x = coordinates[0];

@@ -1,4 +1,5 @@
 var Game = {
+	'socket' : null,
 	'started' : false,
 	'FPS' : 30,
 	'board' : null,
@@ -30,8 +31,6 @@ Game.updateBombs = function () {
 $(function() {
  	var player = new Image();
 	Game.board = new Gameboard();
-	
-	Game.board.build();
 	
 	player.onload = function () {
 		Game.players.p1 = new Player(player);

@@ -1,21 +1,5 @@
 function Gameboard() {
-	this.cellSize = 40;
 	this.cells = [];
-	this.indestructible = new Image();
-	this.indestructible.src = 'images/wall.png';
-	this.floor = new Image();
-	this.floor.src = 'images/sand.png';
-	this.destructible = new Image()
-	this.destructible.src = 'images/brick.png';
-	this.bomb = new Image();
-	this.bomb.src = 'images/bomb.png';
-	
-	this.canvas = document.getElementById('gameBoard');
-	this.ctx = this.canvas.getContext('2d');
-	
-	this.cleanCtx = function () {
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	};
 	
 	this.build = function () {
 			/* Empty lines */
@@ -45,44 +29,6 @@ function Gameboard() {
 				}
 			}
 	}
-	
-	this.drawBoard = function () {
-		var yCellsNumber = (this.canvas.height / this.cellSize);
-		var xCellsNumber = (this.canvas.width / this.cellSize);
-		
-		for (var i = 0; i < yCellsNumber; i++)
-		{
-			for (var j = 0; j < xCellsNumber; j++)
-			{
-				switch (this.cells[i][j])
-				{
-					
-					/* Board is 600x600, sprites are 40x40 => 15 cells
-					/* Block codes 
-					0 = empty
-					1 = destructible
-					2 = indestructible
-					3 = bonus
-					4 = bomb
-					*/
-					case 1:
-						this.ctx.drawImage(this.destructible, j * 40, i * 40, this.indestructible.width, this.indestructible.height);
-						break;
-					case 2:
-						this.ctx.drawImage(this.indestructible, j * 40, i * 40, this.indestructible.width, this.indestructible.height);
-						break;
-					case 4:
-						this.ctx.drawImage(this.bomb, j * 40, i * 40, this.indestructible.width, this.indestructible.height);
-						break;	
-					case 0:
-						this.ctx.drawImage(this.floor, j * 40, i * 40, this.indestructible.width, this.indestructible.height);
-						break;
-					default:
-						break;
-				}
-			}
-		}
-	}
 
 	this.getBlockType = function (blockCoordinates) {
 		if (!(blockCoordinates instanceof Array)) throw 'WrongTypeArgument';
@@ -96,3 +42,5 @@ function Gameboard() {
 		this.cells[blockCoordinates[1]][blockCoordinates[0]] = newType;
 	}
 }
+
+exports.mGameboard = Gameboard;
