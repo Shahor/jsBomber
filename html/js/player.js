@@ -1,16 +1,18 @@
-function Player(img, x, y) {
-	this.x = x || 0;
-	this.y = y || 0;
+function Player(img, coordinates) {
+	this.x = coordinates[0] || 0;
+	this.y = coordinates[1] || 0;
 	this.img = img;
 	this.speed = 5;
 	this.bombsAvailable = 1;
-        this.dead = false;
+	this.dead = false;
 }
 
 Player.prototype.draw = function (ctx) {
 	Game.board.ctx.drawImage(this.img, this.x, this.y, this.img.width, this.img.height);
 };
 
+
+// Todo : Move to server
 Player.prototype.hasAvailableBombs = function () {
 	return this.bombsAvailable > 0 ? true : false;
 }
@@ -48,8 +50,7 @@ Player.prototype.move = function(direction) {
 			this.y -= this.speed;
 			break;
 		case 'down':
-			if (this.wouldCollide(direction))
-			{
+			if (this.wouldCollide(direction)) {
 				Debug.warn("Can't move downwards anymore");
 				break;
 			}
@@ -62,8 +63,21 @@ Player.prototype.move = function(direction) {
 }
 
 /**
+	@brief  Returns actual coordinates
+        @return array [x, y] (in pixels)
+*/
+Player.prototype.getRealCoordinates = function () {
+	return [this.x, this.y];
+}
+
+Player.prototype.setCoordinates = function (coordinates) {
+	this.x = coordinates[0];
+	this.y = coordinates[1];
+}
+
+/**
 	@brief	Returns actual block's position in gameboard's grid
-	@return	array [x, y]
+	@return	array [x, y] (positions in board)
 */
 Player.prototype.isInBlock = function() {
 	return [parseInt(this.x / Game.board.cellSize), parseInt(this.y / Game.board.cellSize)];

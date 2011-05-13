@@ -1,10 +1,15 @@
 var Game = {
 	'socket' : null,
 	'started' : false,
+	'playerConnected' : false,
 	'FPS' : 30,
 	'board' : null,
 	'player' : null,
-	'bombs' : []
+	'loaded' : false,
+	'ticks' : 5,
+	'actualFrame' : 0,
+	'bombs' : [],
+	'oponents' : {}
 }
 
 Game.updateBombs = function () {
@@ -26,26 +31,27 @@ Game.updateBombs = function () {
 }
 
 $(function() {
- 	var player = new Image();
-	Game.board = new Gameboard();
-	Game.board.build();
-	
 	Game.socket = new io.Socket('localhost', {port: 8080, rememberTransport: false});
 	Game.socket.connect();
-	Game.socket.on('connect', function(){ console.log('connected'); });
-	Game.socket.on('message', function(mess){ console.log(mess); });
-	Game.socket.on('disconnect', function(){console.log('disconnected'); });
-	
-	Game.socket.send({'msg' : 'getBoard'});
-	
-	player.onload = function () {
-		Game.player = new Player(player);
-		Game.started = true;
-	};
-	player.src = 'images/bomberman_40x40.png';
+	Game.socket.on('connect', function(){ 
+		Game.playerConnected = true;
+	});
+	Game.socket.on('message', function(message) { 
+		if (typeof bomberApi[message['msg']] === 'function')
+		{
+			bomberApi[message['msg']](message.parameters);
+		}
+		else
+		{
+			console.error('[Error] : Unknown action : ' + message.msg);
+		}
+	});
+	Game.socket.on('disconnect', function() {
+		console.log('disconnected'); 
+	});
 
 	setInterval(function () {
-		if (!Game.started) return false;
+		if (!(Game.started && Game.playerConnected && Game.loaded)) return false;
 
 		Game.board.cleanCtx();
 		if (keydown.right) Game.player.move('right');
@@ -58,5 +64,36 @@ $(function() {
 		
 		Game.board.drawBoard();
 		Game.player.draw(Game.ctx);
+		for (var oponent in Game.oponents)
+		{
+			Game.oponents[oponent].draw();
+		}
+
+		/*/ Update everything 5 frames
+		if (Game.actualFrame % Game.ticks === 0)
+		{
+			Game.socket.send({
+				'msg' : 'updatePlayer',
+				'parameters' : {
+					'coordinates' : Game.player.getRealCoordinates()
+				}
+			});
+		}
+
+		if (Game.actualFrame >= (1000 / Game.FPS)) 
+		{
+			Game.actualFrame = 0;
+		}
+		else
+		{
+			Game.actualFrame += 1;
+		}
+		//*/
+		Game.socket.send({
+			'msg' : 'updatePlayer',
+			'parameters' : {
+				'coordinates' : Game.player.getRealCoordinates()
+			}
+		});
 	}, 1000 / Game.FPS);
 })
