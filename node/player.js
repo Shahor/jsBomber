@@ -1,6 +1,6 @@
-function Player(img, x, y) {
-	this.x = x || 0;
-	this.y = y || 0;
+function Player(x, y) {
+	this.x = x * 40 || 0;
+	this.y = y * 40 || 0;
 	this.speed = 5;
 	this.bombsAvailable = 1;
 	this.dead = false;
@@ -54,6 +54,20 @@ Player.prototype.move = function(direction) {
 		default:
 			throw 'MovementDirectionException';
 	}
+}
+
+
+/**
+	@brief  Returns actual coordinates
+        @return array [x, y] (in pixels)
+*/
+Player.prototype.getRealCoordinates = function () {
+	return [this.x, this.y];
+}
+
+Player.prototype.setCoordinates = function (coordinates) {
+	this.x = coordinates[0];
+	this.y = coordinates[1];
 }
 
 /**

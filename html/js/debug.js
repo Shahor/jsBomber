@@ -1,23 +1,24 @@
 var Debug = {
+	'debug' : false,
 	'levels' : {
 		'warn' : true,
 		'error' : true,
 		'log' : true
 	},
 	'log' : function (msg) {
-		if (this.levels.log)
+		if (this.debug && this.levels.log)
 		{	
 			console.log('[Log] : ' + msg);
 		}
 	},	
 	'error' : function (msg) { 
-		if (this.levels.error)
+		if (this.debug && this.levels.error)
 		{
 			console.error('[Error] : ' + msg);
 		}
 	},
 	'warn' : function (msg) { 
-		if (this.levels.warn)
+		if (this.debug && this.levels.warn)
 		{
 			console.warn('[Info] : ' + msg);
 		}

@@ -3,6 +3,9 @@ var io = require('socket.io');
 
 var Game = require('./game.js').mGame;
 var Gameboard = require('./gameboard.js').mGameboard;
+var Player = require('./player.js').mPlayer;
+
+
 var actions = require('./bomberApi.js').actions;
 
 
@@ -23,23 +26,30 @@ server.listen(8080);
 var socket = io.listen(server);
 
 socket.on('connection', function(client){
+	var coordinates = Game.addPlayer(client);
+	
 	client.on('message', function(message) { 
 		if (typeof actions[message['msg']] === 'function')
 		{
-			message['parameters'].Game = Game;
+			message.parameters.client = client;
+			message.parameters.Game = Game;
 			actions[message['msg']](message.parameters);
 		}
 		else
 		{
-			console.log('Unknown action : ');
-			console.dir(message);
+			console.error('[Error] : Unknown action : ' + message.msg);
 		}
 	});
 	
 	client.on('disconnect', function() { 
-		console.log('disconnect'); 
+		delete Game.players[client.sessionId];
 	});
 
-	client.send({'msg' : 'initBoard', 'params' : {'board' : gameboard.cells}});
-	client.broadcast('testMessage from ' + client.sessionId);
+	client.send({
+		'msg' : 'initBoard', 
+		'parameters' : {
+			'cells' : gameboard.cells,
+			'coordinates' : coordinates
+		}
+	});
 });
