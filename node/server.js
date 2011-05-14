@@ -27,7 +27,7 @@ var socket = io.listen(server);
 
 socket.on('connection', function(client){
 	var coordinates = Game.addPlayer(client);
-	
+
 	client.on('message', function(message) { 
 		if (typeof actions[message['msg']] === 'function')
 		{

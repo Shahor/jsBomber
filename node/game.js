@@ -4,25 +4,7 @@ var Game = {
 	'started' : false,
 	'board' : null,
 	'players' : {},
-	'bombs' : []
-}
-
-Game.updateBombs = function () {
-	if (this.bombs.length > 0)
-	{
-		for (var i = 0; i < this.bombs.length; i++)
-		{
-			if (this.bombs[i].timeBeforeExplosion > 0)
-			{
-				this.bombs[i].timeBeforeExplosion -= 1;
-			}
-			else
-			{
-				this.bombs[i].explode();
-				this.bombs.shift();
-			}
-		}
-	}
+	'FPS' : 30
 }
 
 Game.addPlayer = function (socket) {
@@ -49,10 +31,11 @@ Game.addPlayer = function (socket) {
 			initialPosition = {'x' : 0, 'y' : 14};
 			break;
 	}
-	var player = new Player(initialPosition.x, initialPosition.y);
+	var player = new Player(initialPosition.x, initialPosition.y, socket.sessionId);
+	
 	Game.players[socket.sessionId] = {
-		'socket' : socket,
-		'player' : player
+		'player' : player,
+		'socket' : socket
 	};
 	
 	for (var oponent in Game.players) 
@@ -75,7 +58,7 @@ Game.addPlayer = function (socket) {
 			'sessionId' : socket.sessionId
 		}
 	});
-	
+	//*/
 	return player.getRealCoordinates();
 }
 
