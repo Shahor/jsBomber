@@ -99,7 +99,12 @@ Player.prototype.placeBomb = function () {
 	var actualBlockType = Game.board.getBlockType(actualBlock);
 	if (actualBlockType !== 4) /* Has no bomb yet */
 	{
-		new Bomb(actualBlock, this);
+		Game.socket.send({
+			'msg' : 'tryToPlaceBomb',
+			'parameters' : {
+				'actualBlock' : actualBlock
+			}
+		})
 	}
 }
 

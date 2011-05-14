@@ -1,4 +1,7 @@
-function Player(x, y) {
+var Bomb = require('./bomb.js').mBomb;
+
+function Player(x, y, id) {
+	this.id = id;
 	this.x = x * 40 || 0;
 	this.y = y * 40 || 0;
 	this.speed = 5;
@@ -15,7 +18,7 @@ Player.prototype.hasAvailableBombs = function () {
 	@direction	string could be left, right, up, down
 */
 Player.prototype.move = function(direction) {
-        if (this.dead) throw 'DeadException';
+	if (this.dead) console.log("can't move, you're dead");
 
 	switch (direction) {
 		case 'right': 
@@ -75,7 +78,7 @@ Player.prototype.setCoordinates = function (coordinates) {
 	@return	array [x, y]
 */
 Player.prototype.isInBlock = function() {
-	return [parseInt(this.x / Game.board.cellSize), parseInt(this.y / Game.board.cellSize)];
+	return [parseInt(this.x / 40), parseInt(this.y / 40)];
 }
 
 Player.prototype.canWalkThroughBlock = function (blockType) {
@@ -89,12 +92,31 @@ Player.prototype.canWalkThroughBlock = function (blockType) {
 	}
 }
 
-Player.prototype.placeBomb = function () {
-	var actualBlock = this.isInBlock();
-	var actualBlockType = Game.board.getBlockType(actualBlock);
-	if (actualBlockType !== 4) /* Has no bomb yet */
+Player.prototype.placeBomb = function (Game) {
+	if (this.hasAvailableBombs())
 	{
-		new Bomb(actualBlock, this);
+		var actualBlock = this.isInBlock();
+		var actualBlockType = Game.board.getBlockType(actualBlock);
+		if (actualBlockType !== 4) /* Has no bomb yet */
+		{
+			var bomb = new Bomb(actualBlock, this, Game);
+			
+			setTimeout(function () {
+				bomb.explode();
+			}, 2500);
+		}
+		Game.players[this.id].socket.send({
+			'msg' : 'updateBoard',
+			'parameters' : {
+				'cells' : Game.board.cells
+			}
+		});
+		Game.players[this.id].socket.broadcast({
+			'msg' : 'updateBoard',
+			'parameters' : {
+				'cells' : Game.board.cells
+			}
+		});
 	}
 }
 

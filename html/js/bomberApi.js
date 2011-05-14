@@ -20,5 +20,8 @@ var bomberApi = {
 	'updateOponents' : function (parameters) {
 		if (Game.oponents[parameters.sessionId] instanceof Player)
 			Game.oponents[parameters.sessionId].setCoordinates(parameters.coordinates);
+	},
+	'updateBoard' : function (parameters) {
+		Game.board.cells = parameters.cells;
 	}
 }
